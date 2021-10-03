@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Building & pushing Docker image...'
                 sh 'docker image build -t $registry:$BUILD_NUMBER .'
-                sh 'docker login -u dockerforjobseekers -p $DOCKER_PWD'
+                sh 'docker login -u gnschenker -p $DOCKER_PWD'
                 sh 'docker image push $registry:$BUILD_NUMBER'
                 sh 'docker image rm $registry:$BUILD_NUMBER'
             }
