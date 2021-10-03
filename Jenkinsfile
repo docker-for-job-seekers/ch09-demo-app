@@ -18,19 +18,19 @@ pipeline {
         stage('Build') {
             steps {
                 echo('Building...')
-                sh 'npm install'
+                sh 'cd web && npm install'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'npm test'
+                sh 'cd web && npm test'
             } 
         }
         stage('Build & push Docker image') {
             steps {
                 echo 'Building & pushing Docker image...'
-                sh 'docker image build -t $registry:$BUILD_NUMBER .'
+                sh 'docker image build -t $registry:$BUILD_NUMBER web'
                 sh 'docker login -u gnschenker -p $DOCKER_PWD'
                 sh 'docker image push $registry:$BUILD_NUMBER'
                 sh 'docker image rm $registry:$BUILD_NUMBER'
