@@ -1,28 +1,40 @@
 pipeline {
-    agent any
+    environment {
+        registry = "dockerforjobseekers/web"
+        DOCKER_PWD = credentials('docker-login-pwd')
+    }
+    agent {
+        docker {
+            image 'dockerforjobseekers/node-docker'
+            args '-p 3000:3000'
+            args '-w /app'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     options {
         skipStagesAfterUnstable()
     } 
     stages {
         stage('Build') {
             steps {
-                echo 'Building'
+                echo('Building...')
+                sh 'npm install'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing'
+                echo 'Testing...'
+                sh 'npm test'
             } 
         }
-        stage('Deploy to Staging') {
+        stage('Build & push Docker image') {
             steps {
-                echo 'Deploying to Staging'
+                echo 'Building & pushing Docker image...'
+                sh 'docker image build -t $registry:$BUILD_NUMBER .'
+                sh 'docker login -u dockerforjobseekers -p $DOCKER_PWD'
+                sh 'docker image push $registry:$BUILD_NUMBER'
+                sh 'docker image rm $registry:$BUILD_NUMBER'
             }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo 'Deploying to Production'
-            } 
         }
     }
 }
