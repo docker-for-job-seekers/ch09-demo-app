@@ -11,10 +11,6 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.json());
 
-app.listen(port, () => {
-  console.log(`Demo Web application listening at http://localhost:${port}`)
-})
-
 app.get('/', (req, res) => {
   res.render('index');
 })
@@ -37,3 +33,13 @@ app.post('/orders', async (req, res) => {
     const result = await got.post(url, { json: order });
     console.log(result);
 })
+
+app.get('/health', (req, res) => {
+  res.sendStatus(200);
+})
+
+var server = app.listen(port, () => {
+  console.log(`Demo Web application listening at http://localhost:${port}`)
+})
+
+module.exports = server;

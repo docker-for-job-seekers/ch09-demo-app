@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test-init": "node_modules/jasmine/bin/jasmine.js init",
+    "test": "node_modules/jasmine/bin/jasmine.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +14,9 @@
     "express": "^4.17.1",
     "got": "^11.8.2",
     "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "jasmine": "^3.9.0",
+    "request": "^2.88.2"
   }
 }
