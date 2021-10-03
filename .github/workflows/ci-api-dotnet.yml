@@ -1,0 +1,23 @@
+name: build-api-dotnet-image-workflow
+on: [push]
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image for automated tests of .NET API
+        run: |
+          docker image build \
+            -f ./.docker/api-dotnet-tests/Dockerfile \
+            -t api-dotnet-tests .
+
+      - name: Run automated tests in api-dotnet-tests image
+        run: docker container run api-dotnet-tests
+
+      - name: Build the Docker image for .NET API     
+        run: |
+          docker image build \
+            -t dockerforjobseekers/api-dotnet:ch09 \
+            api-dotnet
