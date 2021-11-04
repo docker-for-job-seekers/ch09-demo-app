@@ -36,5 +36,16 @@ pipeline {
                 sh 'docker image rm $registry:$BUILD_NUMBER'
             }
         }
+        stage('Deploy and smoke test') { 
+            steps { 
+                sh './jenkins/scripts/deploy.sh' 
+                sh './jenkins/scripts/smoke-test.sh' 
+            } 
+        } 
+        stage('Cleanup') { 
+            steps { 
+                sh './jenkins/scripts/cleanup.sh' 
+            } 
+        }
     }
 }
